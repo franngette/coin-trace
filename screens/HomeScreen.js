@@ -2,8 +2,7 @@ import React from "react";
 import { Text, View } from "react-native";
 import Colors from "../constants/Colors";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import CustomHeaderButton from "../components/CustomHeaderButton";
-
+import CustomHeaderButton from "../components/UI/CustomHeaderButton";
 const HomeScreen = () => {
   return (
     <View>
