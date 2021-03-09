@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import Colors from "../constants/Colors";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import CustomHeaderButton from "../components/UI/CustomHeaderButton";
+import CustomHeaderButton from "../components/UI/CustomHeaderButton/CustomHeaderButton";
+import { getPairs } from "../helpers/db";
+
 const HomeScreen = () => {
+  useEffect(() => {
+    getPairs()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <View>
       <Text>This is the HomeScreen</Text>

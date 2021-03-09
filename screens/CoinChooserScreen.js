@@ -1,21 +1,21 @@
 import React from "react";
-import { Text, View, FlatList } from "react-native";
+import { Text, View, FlatList, SafeAreaView, StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
-import CoinPairs from "../components/coin/CoinPairs";
+
+import CoinPairs from "../components/UI/coin/CoinPairs";
+
 import pairs from "../helpers/dummyData";
+
 const CoinChooserScreen = () => {
-  const renderPairs = () => {
-    return pairs.map((e, i) => {
-      let arr = [];
-      let first = e.substring(0, 3).toLocaleLowerCase();
-      let second = e.substring(3, 6).toLocaleLowerCase();
-      arr.push(first);
-      arr.push(second);
-      console.log(arr);
-      return <CoinPairs pair={arr} key={i} />;
-    });
-  };
-  return <View>{renderPairs()}</View>;
+  return (
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={pairs}
+        keyExtractor={(pairs) => pairs.id.toString()}
+        renderItem={({ item }) => <CoinPairs pair={item} />}
+      ></FlatList>
+    </SafeAreaView>
+  );
 };
 
 export const screenOptions = (navData) => {
@@ -27,5 +27,11 @@ export const screenOptions = (navData) => {
     headerTintColor: Colors.white,
   };
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default CoinChooserScreen;

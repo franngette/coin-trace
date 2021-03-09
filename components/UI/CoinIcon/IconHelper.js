@@ -388,7 +388,7 @@ export default path = {
 "unity": require("./color/unity.png"),
 "usd": require("./color/usd.png"),
 "usdc": require("./color/usdc.png"),
-"usdt": require("./color/usdt.png"),
+"ust": require("./color/usdt.png"),
 "utk": require("./color/utk.png"),
 "veri": require("./color/veri.png"),
 "vet": require("./color/vet.png"),
