@@ -1,25 +1,34 @@
 import React, { useEffect } from "react";
-import { Text, View } from "react-native";
 import Colors from "../constants/Colors";
+
+import { SafeAreaView, FlatList, StyleSheet } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/UI/CustomHeaderButton/CustomHeaderButton";
-import { getPairs } from "../helpers/db";
+import { useDispatch, useSelector } from "react-redux";
+import { getPairs } from "../store/actions/coinPair";
+import PairTraced from "../components/UI/PairTraced/PairTraced";
 
 const HomeScreen = () => {
+
+  const dispatch = useDispatch();
+    const pairs = useSelector((state) => state.pairs);
+
+  const getData = () => {
+    dispatch(getPairs());
+  };
+
   useEffect(() => {
-    getPairs()
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    getData();
+  }, [pairs]);
 
   return (
-    <View>
-      <Text>This is the HomeScreen</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={pairs}
+        keyExtractor={(pairs) => pairs.id.toString()}
+        renderItem={({ item }) => <PairTraced pair={item} />}
+      ></FlatList>
+    </SafeAreaView>
   );
 };
 
@@ -45,5 +54,11 @@ export const screenOptions = (navData) => {
     headerTintColor: Colors.white,
   };
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default HomeScreen;

@@ -2,8 +2,7 @@ import React from "react";
 import { Text, View, FlatList, SafeAreaView, StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
 
-import CoinPairs from "../components/UI/coin/CoinPairs";
-
+import CoinPairs from "../components/UI/CoinPairs/CoinPairs";
 import pairs from "../helpers/dummyData";
 
 const CoinChooserScreen = () => {

@@ -1,18 +1,24 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../../../constants/Colors";
+
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import CoinIcon from "../CoinIcon/CoinIcon";
 import { Ionicons } from "@expo/vector-icons";
-import { insertPair } from "../../../helpers/db";
+import { useDispatch, useSelector } from "react-redux";
+import { addPair } from "../../../store/actions/coinPair";
+
 const CoinPairs = ({ pair }) => {
+  const pairs = useSelector((state) => state.pairs);
+  const dispatch = useDispatch();
+
   const storePair = () => {
-    insertPair(pair.primary + pair.secondary + "")
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const newPair = (pair.primary + pair.secondary).toString();
+    const findPair = pairs.filter((el) => el.pair === newPair);
+    if (findPair.length > 0) {
+      console.log(findPair);
+    } else {
+      dispatch(addPair(newPair)).then((err) => console.log(err));
+    }
   };
 
   return (

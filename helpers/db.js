@@ -6,7 +6,7 @@ export const init = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS pairs (id INTEGER PRIMARY KEY NOT NULL, pair TEXT NOT NULL);",
+        "CREATE TABLE IF NOT EXISTS pairs (id INTEGER PRIMARY KEY NOT NULL, pair TEXT NOT NULL UNIQUE);",
         [],
         () => {
           resolve();
