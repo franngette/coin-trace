@@ -8,8 +8,15 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case GET_PAIRS:
       return {
-        ...initialState,
+        ...state,
         pairs: action.payload,
+      };
+    case ADD_PAIR:
+        const test = state.pairs
+        test.push(action.payload)
+      return {
+        ...state,
+        pairs: test
       };
   }
   return state;

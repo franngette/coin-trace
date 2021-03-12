@@ -17,7 +17,7 @@ const CoinPairs = ({ pair }) => {
     if (findPair.length > 0) {
       console.log(findPair);
     } else {
-      dispatch(addPair(newPair)).then((err) => console.log(err));
+      dispatch(addPair(newPair));
     }
   };
 

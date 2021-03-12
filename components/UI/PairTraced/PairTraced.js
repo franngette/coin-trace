@@ -1,25 +1,55 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import Colors from "../../../constants/Colors";
 import CoinIcon from "../CoinIcon/CoinIcon";
+import cryptocurrencies from "cryptocurrencies";
+
 const PairTraced = ({ pair }) => {
+  const primary = pair.pair.substring(0, 3).toUpperCase();
+  const secondary = pair.pair.substring(3, 6).toUpperCase();
+  const [pressed, setPressed] = useState(false);
+
+  const pressHandler = () => {
+    setPressed(!pressed);
+  };
+
   return (
     <View style={styles.wrapper}>
-      <View style={styles.pairContainer}>
-        <View style={styles.pairIcons}>
-          <CoinIcon icon={pair.pair.substring(0, 3)} size={20} />
-          <CoinIcon icon={pair.pair.substring(3, 6)} size={20} />
+      <Pressable
+        onPress={() => {
+          pressHandler();
+        }}
+        onPressOut={() => {
+          pressHandler();
+        }}
+        style={({ pressed }) => [
+          {
+            backgroundColor: pressed ? Colors.gray : "white",
+          },
+          styles.pairWrapper,
+        ]}
+      >
+        <View style={styles.pairContainer}>
+          <View style={styles.pairIcons}>
+            <CoinIcon icon={pair.pair.substring(0, 3)} size={20} />
+            <CoinIcon icon={pair.pair.substring(3, 6)} size={20} />
+          </View>
+          <View>
+            <Text style={styles.pairTitle}>{pair.pair.toUpperCase()}</Text>
+            <Text style={styles.pairDesc}>
+              {cryptocurrencies[primary]} / {cryptocurrencies[secondary]}
+            </Text>
+          </View>
         </View>
         <View>
-          <Text style={styles.pairTitle}>{pair.pair.toUpperCase()}</Text>
-          <Text style={styles.pairDesc}>
-            {pair.pair.substring(0, 3).toUpperCase()} / {pair.pair.substring(3, 6).toUpperCase()}
-          </Text>
+          <Text>$11</Text>
         </View>
-      </View>
-      <View>
-        <Text>$11</Text>
-      </View>
+      </Pressable>
+      {pressed && (
+        <View style={styles.child}>
+          <Text>Test</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -27,15 +57,20 @@ const PairTraced = ({ pair }) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    margin: 10,
+    position: "relative",
+  },
+  pairWrapper: {
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     height: 60,
-    backgroundColor: "white",
     borderRadius: 10,
     borderColor: Colors.gray,
     borderWidth: 2,
-    margin: 10,
     padding: 20,
   },
   pairContainer: {
@@ -52,6 +87,15 @@ const styles = StyleSheet.create({
   },
   pairDesc: {
     fontSize: 12,
+  },
+  child: {
+    width: "60%",
+    height: 100,
+    backgroundColor: "red",
+    position: "absolute",
+    top: 60,
+    zIndex: 3,
+    elevation: 3,
   },
 });
 

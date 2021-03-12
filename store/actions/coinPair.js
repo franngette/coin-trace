@@ -12,11 +12,11 @@ export const getPairs = () => {
 
 export const addPair = (pair) => {
   return async (dispatch) => {
-    try {
-      await insertPair(pair);
-      dispatch({ type: ADD_PAIR });
-    } catch (err) {
-      throw err;
-    }
+    const result = insertPair(pair);
+    const newPair = {
+      id: result.insertId,
+      pair: pair,
+    };
+    dispatch({ type: ADD_PAIR, payload: newPair });
   };
 };

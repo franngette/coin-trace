@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import Colors from "../constants/Colors";
 
 import { SafeAreaView, FlatList, StyleSheet } from "react-native";
@@ -9,9 +9,8 @@ import { getPairs } from "../store/actions/coinPair";
 import PairTraced from "../components/UI/PairTraced/PairTraced";
 
 const HomeScreen = () => {
-
   const dispatch = useDispatch();
-    const pairs = useSelector((state) => state.pairs);
+  const pairs = useSelector((state) => state.pairs);
 
   const getData = () => {
     dispatch(getPairs());
@@ -19,15 +18,14 @@ const HomeScreen = () => {
 
   useEffect(() => {
     getData();
-  }, [pairs]);
+  }, []);
+
+  const renderItems = useCallback(({ item }) => <PairTraced pair={item} />, []);
+  const keyExtractor = useCallback((pairs) => pairs.id.toString(), []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={pairs}
-        keyExtractor={(pairs) => pairs.id.toString()}
-        renderItem={({ item }) => <PairTraced pair={item} />}
-      ></FlatList>
+      <FlatList data={pairs} keyExtractor={keyExtractor} renderItem={renderItems} />
     </SafeAreaView>
   );
 };
