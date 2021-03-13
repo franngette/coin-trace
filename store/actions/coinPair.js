@@ -1,7 +1,8 @@
 export const GET_PAIRS = "GET_PAIRS";
 export const ADD_PAIR = "ADD_PAIR";
+export const REMOVE_PAIR = "REMOVE_PAIR";
 
-import { getPairs as pairsInDb, insertPair } from "../../helpers/db";
+import { getPairs as pairsInDb, insertPair, removeItem } from "../../helpers/db";
 
 export const getPairs = () => {
   return async (dispatch) => {
@@ -18,5 +19,13 @@ export const addPair = (pair) => {
       pair: pair,
     };
     dispatch({ type: ADD_PAIR, payload: newPair });
+  };
+};
+
+export const removePair = (pair) => {
+  return async (dispatch) => {
+    const res = removeItem(pair.pair);
+    console.log(pair.pair);
+    dispatch({ type: REMOVE_PAIR, payload: pair });
   };
 };

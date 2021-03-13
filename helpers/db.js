@@ -55,3 +55,21 @@ export const getPairs = () => {
   });
   return promise;
 };
+
+export const removeItem = (pair) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "DELETE FROM pairs WHERE pair = (?);",
+        [pair],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};

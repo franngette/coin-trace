@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Button } from "react-native";
 import Colors from "../../../constants/Colors";
 import CoinIcon from "../CoinIcon/CoinIcon";
 import cryptocurrencies from "cryptocurrencies";
-
+import { useDispatch } from "react-redux";
+import { removePair } from "../../../store/actions/coinPair";
 const PairTraced = ({ pair }) => {
   const primary = pair.pair.substring(0, 3).toUpperCase();
   const secondary = pair.pair.substring(3, 6).toUpperCase();
   const [pressed, setPressed] = useState(false);
-
+  const dispatch = useDispatch();
   const pressHandler = () => {
     setPressed(!pressed);
   };
@@ -47,7 +48,7 @@ const PairTraced = ({ pair }) => {
       </Pressable>
       {pressed && (
         <View style={styles.child}>
-          <Text>Test</Text>
+          <Button title="Remove" onPress={() => dispatch(removePair(pair))} />
         </View>
       )}
     </View>
@@ -92,10 +93,7 @@ const styles = StyleSheet.create({
     width: "60%",
     height: 100,
     backgroundColor: "red",
-    position: "absolute",
-    top: 60,
-    zIndex: 3,
-    elevation: 3,
+    position: "relative",
   },
 });
 

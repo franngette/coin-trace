@@ -1,4 +1,4 @@
-import { GET_PAIRS, ADD_PAIR } from "../actions/coinPair";
+import { GET_PAIRS, ADD_PAIR, REMOVE_PAIR } from "../actions/coinPair";
 
 const initialState = {
   pairs: [],
@@ -12,11 +12,17 @@ export default (state = initialState, action) => {
         pairs: action.payload,
       };
     case ADD_PAIR:
-        const test = state.pairs
-        test.push(action.payload)
+      const test = state.pairs;
+      test.push(action.payload);
       return {
         ...state,
-        pairs: test
+        pairs: test,
+      };
+    case REMOVE_PAIR:
+      const newPairs = state.pairs.filter((item) => item !== action.payload);
+      return {
+        ...state,
+        pairs: newPairs,
       };
   }
   return state;
