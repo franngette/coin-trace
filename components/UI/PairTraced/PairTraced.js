@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Pressable, Button } from "react-native";
+import { View, Text, StyleSheet, Pressable, Button, Platform } from "react-native";
 import Colors from "../../../constants/Colors";
 import CoinIcon from "../CoinIcon/CoinIcon";
 import cryptocurrencies from "cryptocurrencies";
 import { useDispatch } from "react-redux";
 import { removePair } from "../../../store/actions/coinPair";
+
 const PairTraced = ({ pair }) => {
   const primary = pair.pair.substring(0, 3).toUpperCase();
   const secondary = pair.pair.substring(3, 6).toUpperCase();
@@ -13,7 +14,6 @@ const PairTraced = ({ pair }) => {
   const pressHandler = () => {
     setPressed(!pressed);
   };
-
   return (
     <View style={styles.wrapper}>
       <Pressable
@@ -42,9 +42,14 @@ const PairTraced = ({ pair }) => {
             </Text>
           </View>
         </View>
-        <View>
-          <Text>$11</Text>
-        </View>
+        {pair.prices && (
+          <View style={styles.prices}>
+            <Text>{pair.prices[6]}</Text>
+            <Text>
+              {pair.prices[4]} %{pair.prices[5]}
+            </Text>
+          </View>
+        )}
       </Pressable>
       {pressed && (
         <View style={styles.child}>
@@ -61,7 +66,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     margin: 10,
-    position: "relative",
   },
   pairWrapper: {
     width: "100%",
@@ -93,7 +97,13 @@ const styles = StyleSheet.create({
     width: "60%",
     height: 100,
     backgroundColor: "red",
-    position: "relative",
+    position: "absolute",
+    top: 60,
+    zIndex: 50,
+    elevation: Platform.OS === "android" ? 50 : 0,
+  },
+  prices: {
+    alignItems: "flex-end",
   },
 });
 

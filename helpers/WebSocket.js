@@ -1,18 +1,29 @@
-import React from "react";
+import { channelId, updatePrice } from "../store/actions/coinPair";
+import { store } from "../store/store";
 
-var ws = new WebSocket("wss://api-pub.bitfinex.com/ws/2");
-let msg = JSON.stringify({
-  event: "subscribe",
-  channel: "ticker",
-  symbol: "tBTCUSD",
-});
-ws.onopen = () => {
-  // connection opened
-  ws.send(msg); // send a message
+const ws = new WebSocket("wss://api-pub.bitfinex.com/ws/2");
+
+export const sendWs = (pair) => {
+  if (ws.readyState === 1) {
+    let msg = JSON.stringify({
+      event: "subscribe",
+      channel: "ticker",
+      symbol: `t${pair}`,
+    });
+    ws.send(msg);
+  }
 };
 
 ws.addEventListener("message", function (event) {
-  console.log("Message from server ", event);
+  console.log(event.data);
+  let messageObj = JSON.parse(event.data);
+  if (messageObj.event === "subscribed") {
+    store.dispatch(channelId(messageObj));
+  }
+  if (Array.isArray(messageObj)) {
+    if (typeof messageObj[1][6] === "number") store.dispatch(updatePrice(messageObj));
+  }
+  console.log("Message from server ");
 });
 
 ws.onerror = (e) => {

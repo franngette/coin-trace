@@ -1,24 +1,21 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback } from "react";
 import Colors from "../constants/Colors";
 
 import { SafeAreaView, FlatList, StyleSheet } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/UI/CustomHeaderButton/CustomHeaderButton";
-import { useDispatch, useSelector } from "react-redux";
-import { getPairs } from "../store/actions/coinPair";
+import { useSelector } from "react-redux";
 import PairTraced from "../components/UI/PairTraced/PairTraced";
+import { sendWs } from "../helpers/WebSocket";
 
 const HomeScreen = () => {
-  const dispatch = useDispatch();
-  const pairs = useSelector((state) => state.pairs);
-
-  const getData = () => {
-    dispatch(getPairs());
-  };
+  const pairs = useSelector((state) => state.pairs.pairs);
 
   useEffect(() => {
-    getData();
-  }, []);
+    pairs.forEach((element) => {
+      if (!element.chanId) sendWs(element.pair.toUpperCase());
+    });
+  }, [pairs]);
 
   const renderItems = useCallback(({ item }) => <PairTraced pair={item} />, []);
   const keyExtractor = useCallback((pairs) => pairs.id.toString(), []);

@@ -3,10 +3,9 @@ import CoinTraceNavigation from "./navigation/CoinTraceNavigation";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 import { init } from "./helpers/db";
-import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import pairsReducer from "./store/reducers/coinPair";
-import ReduxThunk from "redux-thunk";
+import { store } from "./store/store";
+import { getPairs } from "./store/actions/coinPair";
 
 init()
   .then(() => {
@@ -23,10 +22,10 @@ const fetchFonts = () => {
   });
 };
 
-const store = createStore(pairsReducer, applyMiddleware(ReduxThunk));
-
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
+
+  store.dispatch(getPairs());
 
   if (!fontLoaded) {
     return (
@@ -40,8 +39,10 @@ export default function App() {
     );
   }
   return (
-    <Provider store={store}>
-      <CoinTraceNavigation />
-    </Provider>
+    <>
+      <Provider store={store}>
+        <CoinTraceNavigation />
+      </Provider>
+    </>
   );
 }

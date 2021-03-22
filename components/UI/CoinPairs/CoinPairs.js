@@ -8,14 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { addPair } from "../../../store/actions/coinPair";
 
 const CoinPairs = ({ pair }) => {
-  const pairs = useSelector((state) => state.pairs);
+  const pairs = useSelector((state) => state.pairs.pairs);
   const dispatch = useDispatch();
 
   const storePair = () => {
     const newPair = (pair.primary + pair.secondary).toString();
     const findPair = pairs.filter((el) => el.pair === newPair);
     if (findPair.length > 0) {
-      console.log(findPair);
     } else {
       dispatch(addPair(newPair));
     }

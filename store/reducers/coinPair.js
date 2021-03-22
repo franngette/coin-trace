@@ -1,4 +1,4 @@
-import { GET_PAIRS, ADD_PAIR, REMOVE_PAIR } from "../actions/coinPair";
+import { GET_PAIRS, ADD_PAIR, REMOVE_PAIR, CHANNEL_ID, UPDATE_PRICE } from "../actions/coinPair";
 
 const initialState = {
   pairs: [],
@@ -12,11 +12,11 @@ export default (state = initialState, action) => {
         pairs: action.payload,
       };
     case ADD_PAIR:
-      const test = state.pairs;
-      test.push(action.payload);
+      const pairs = state.pairs;
+      pairs.push(action.payload);
       return {
         ...state,
-        pairs: test,
+        pairs: pairs,
       };
     case REMOVE_PAIR:
       const newPairs = state.pairs.filter((item) => item !== action.payload);
@@ -24,6 +24,27 @@ export default (state = initialState, action) => {
         ...state,
         pairs: newPairs,
       };
+    case CHANNEL_ID:
+      let arrayForChan = [...state.pairs];
+      const indexForChan = arrayForChan.findIndex((el) => el.pair.toUpperCase() === action.payload.pair);
+      arrayForChan[indexForChan].chanId = action.payload.chanId;
+      return {
+        ...state,
+        pairs: arrayForChan,
+      };
+
+    case UPDATE_PRICE:
+      let arrayForPrice = [...state.pairs];
+      const indexForPrice = arrayForPrice.findIndex((el) => el.chanId === action.payload[0]);
+      //console.log(action.payload[1][6])
+      arrayForPrice[indexForPrice].prices = action.payload[1];
+      //console.log(arrayForPrice, indexForPrice, 'ARRAY')
+      return {
+        ...state,
+        pairs: arrayForPrice,
+      };
+    /* state.pairs[pairIndex].chanId = action.payload.chanId;
+      console.log(pairIndex, "pair index ", state.pairs); */
   }
   return state;
 };
